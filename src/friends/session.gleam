@@ -20,10 +20,12 @@ pub fn encode(session: UserSession) -> String {
     None -> json.null()
   }
 
-  json.to_string(json.object([
-    #("sub", json.string(session.sub)),
-    #("name", name),
-  ]))
+  json.to_string(
+    json.object([
+      #("sub", json.string(session.sub)),
+      #("name", name),
+    ]),
+  )
 }
 
 pub fn decode(raw: String) -> Result(UserSession, Nil) {

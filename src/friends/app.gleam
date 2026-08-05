@@ -180,7 +180,10 @@ fn delete_handle(
   }
 }
 
-fn redirect_with_flash(request: wisp.Request, message: String) -> wisp.Response {
+fn redirect_with_flash(
+  request: wisp.Request,
+  message: String,
+) -> wisp.Response {
   wisp.redirect("/")
   |> wisp.set_cookie(request, "friends_flash", message, wisp.Signed, 60)
 }
@@ -192,9 +195,13 @@ fn read_flash(request: wisp.Request) -> Option(String) {
   }
 }
 
-fn clear_flash(response: wisp.Response, request: wisp.Request) -> wisp.Response {
+fn clear_flash(
+  response: wisp.Response,
+  request: wisp.Request,
+) -> wisp.Response {
   case wisp.get_cookie(request, "friends_flash", wisp.Signed) {
-    Ok(_) -> wisp.set_cookie(response, request, "friends_flash", "", wisp.Signed, 0)
+    Ok(_) ->
+      wisp.set_cookie(response, request, "friends_flash", "", wisp.Signed, 0)
     Error(_) -> response
   }
 }

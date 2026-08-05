@@ -1,5 +1,11 @@
 //// Pocket ID OIDC authentication helpers.
 
+import friends/config.{type Config, authorize_url, token_url}
+import friends/html
+import friends/pending
+import friends/session.{
+  type UserSession, UserSession, clear, display_name, write as write_session,
+}
 import gleam/bit_array
 import gleam/crypto
 import gleam/dynamic/decode
@@ -12,12 +18,6 @@ import gleam/option.{type Option, None, Some}
 import gleam/result
 import gleam/string
 import gleam/uri
-import friends/config.{type Config, authorize_url, token_url}
-import friends/html
-import friends/pending
-import friends/session.{
-  type UserSession, UserSession, clear, display_name, write as write_session,
-}
 import wisp
 
 pub const state_max_age_seconds = 600
@@ -77,7 +77,7 @@ pub fn complete(
   Ok(#(
     user,
     wisp.response(200)
-    |> write_session(request, user),
+      |> write_session(request, user),
   ))
 }
 
@@ -177,10 +177,7 @@ fn query_param(request: wisp.Request, key: String) -> Result(String, String) {
   }
 }
 
-fn list_find(
-  params: List(#(String, String)),
-  key: String,
-) -> Option(String) {
+fn list_find(params: List(#(String, String)), key: String) -> Option(String) {
   case params {
     [] -> None
     [#(name, value), ..rest] ->

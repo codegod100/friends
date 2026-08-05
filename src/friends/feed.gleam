@@ -16,7 +16,8 @@ pub fn build_atom(
 ) -> Result(String, String) {
   let followed_handles = handles(store, user_id)
   case followed_handles {
-    [] -> Error("add at least one Bluesky handle before subscribing to your feed")
+    [] ->
+      Error("add at least one Bluesky handle before subscribing to your feed")
     _ -> {
       let posts =
         followed_handles
@@ -34,9 +35,7 @@ pub fn build_atom(
 }
 
 fn sort_posts_newest_first(posts: List(Post)) -> List(Post) {
-  list.sort(posts, fn(a, b) {
-    string.compare(b.created_at, a.created_at)
-  })
+  list.sort(posts, fn(a, b) { string.compare(b.created_at, a.created_at) })
 }
 
 fn render_atom(config: Config, user_id: String, posts: List(Post)) -> String {

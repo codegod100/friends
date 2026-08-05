@@ -16,8 +16,7 @@ pub fn render(
 ) -> String {
   let body = case user {
     None -> render_guest(config)
-    Some(current_user) ->
-      render_dashboard(config, current_user, store, flash)
+    Some(current_user) -> render_dashboard(config, current_user, store, flash)
   }
 
   html.page("Friends", body)
@@ -41,7 +40,8 @@ fn render_dashboard(
   let user_handles = handles(store, user.sub)
   let flash_html = case flash {
     None -> ""
-    Some(message) -> "<div class=\"flash\">" <> html.escape_text(message) <> "</div>"
+    Some(message) ->
+      "<div class=\"flash\">" <> html.escape_text(message) <> "</div>"
   }
 
   "<header><h1>Friends</h1>"
@@ -72,8 +72,7 @@ fn render_dashboard(
 
 fn render_handle_list(user_handles: List(String)) -> String {
   case user_handles {
-    [] ->
-      "<p class=\"meta\">No handles yet. Add one above to get started.</p>"
+    [] -> "<p class=\"meta\">No handles yet. Add one above to get started.</p>"
     _ ->
       "<ul class=\"handles\">"
       <> {

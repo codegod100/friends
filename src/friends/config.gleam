@@ -30,13 +30,22 @@ pub type Config {
 
 pub fn load() -> Result(Config, String) {
   use port <- result.try(read_int("FRIENDS_PORT", default_port))
-  use base_url <- result.try(require_env_or("FRIENDS_BASE_URL", "http://localhost:8000"))
+  use base_url <- result.try(require_env_or(
+    "FRIENDS_BASE_URL",
+    "http://localhost:8000",
+  ))
   use secret_key_base <- result.try(require_env_or(
     "FRIENDS_SECRET_KEY_BASE",
     "development-secret-key-base-change-me-in-production-please",
   ))
-  use data_path <- result.try(require_env_or("FRIENDS_DATA_PATH", "data/handles.json"))
-  use oidc_issuer <- result.try(require_env_or("FRIENDS_OIDC_ISSUER", default_issuer))
+  use data_path <- result.try(require_env_or(
+    "FRIENDS_DATA_PATH",
+    "data/handles.json",
+  ))
+  use oidc_issuer <- result.try(require_env_or(
+    "FRIENDS_OIDC_ISSUER",
+    default_issuer,
+  ))
   use oidc_client_id <- result.try(require_env("FRIENDS_OIDC_CLIENT_ID"))
   use oidc_client_secret <- result.try(require_env("FRIENDS_OIDC_CLIENT_SECRET"))
   use redirect_uri <- result.try(require_env_or(

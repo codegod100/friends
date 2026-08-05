@@ -1,8 +1,8 @@
 import friends/app
 import friends/config
 import gleam/erlang/process
-import gleam/io
 import gleam/int
+import gleam/io
 import mist
 import wisp/wisp_mist
 
@@ -13,7 +13,8 @@ pub fn main() {
       let secret_key_base = app_config.secret_key_base
 
       io.println(
-        "Friends listening on http://localhost:" <> int.to_string(app_config.port),
+        "Friends listening on http://localhost:"
+        <> int.to_string(app_config.port),
       )
 
       let assert Ok(_) =

@@ -79,12 +79,70 @@ fn list_all_ticket_chars(chars: List(String)) -> Bool {
 
 fn is_ticket_char(char: String) -> Bool {
   case char {
-    "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L"
-    | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X"
-    | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j"
-    | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v"
-    | "w" | "x" | "y" | "z" | "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7"
-    | "8" | "9" | "-" | "_" -> True
+    "A"
+    | "B"
+    | "C"
+    | "D"
+    | "E"
+    | "F"
+    | "G"
+    | "H"
+    | "I"
+    | "J"
+    | "K"
+    | "L"
+    | "M"
+    | "N"
+    | "O"
+    | "P"
+    | "Q"
+    | "R"
+    | "S"
+    | "T"
+    | "U"
+    | "V"
+    | "W"
+    | "X"
+    | "Y"
+    | "Z"
+    | "a"
+    | "b"
+    | "c"
+    | "d"
+    | "e"
+    | "f"
+    | "g"
+    | "h"
+    | "i"
+    | "j"
+    | "k"
+    | "l"
+    | "m"
+    | "n"
+    | "o"
+    | "p"
+    | "q"
+    | "r"
+    | "s"
+    | "t"
+    | "u"
+    | "v"
+    | "w"
+    | "x"
+    | "y"
+    | "z"
+    | "0"
+    | "1"
+    | "2"
+    | "3"
+    | "4"
+    | "5"
+    | "6"
+    | "7"
+    | "8"
+    | "9"
+    | "-"
+    | "_" -> True
     _ -> False
   }
 }
@@ -95,11 +153,13 @@ fn encode(user: UserSession, expiry: Int) -> String {
     None -> json.null()
   }
 
-  json.to_string(json.object([
-    #("sub", json.string(user.sub)),
-    #("name", name),
-    #("exp", json.int(expiry)),
-  ]))
+  json.to_string(
+    json.object([
+      #("sub", json.string(user.sub)),
+      #("name", name),
+      #("exp", json.int(expiry)),
+    ]),
+  )
 }
 
 fn decode_ticket(raw: String) -> Result(#(UserSession, Int), String) {

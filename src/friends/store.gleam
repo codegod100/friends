@@ -1,6 +1,6 @@
 //// Persistent Bluesky handle storage per authenticated user.
 
-import gleam/dict as dict
+import gleam/dict
 import gleam/dynamic/decode
 import gleam/json
 import gleam/list
@@ -47,9 +47,10 @@ pub fn add_handle(
           let updated_users =
             dict.insert(store.users, user_id, [normalized, ..existing])
           let next = Store(..store, users: updated_users)
-          use _ <- result.try(save(next) |> result.map_error(fn(_) {
-            "failed to save handles"
-          }))
+          use _ <- result.try(
+            save(next)
+            |> result.map_error(fn(_) { "failed to save handles" }),
+          )
           Ok(#(next, True))
         }
       }
@@ -67,13 +68,13 @@ pub fn remove_handle(
   case list.contains(existing, normalized) {
     False -> Ok(#(store, False))
     True -> {
-      let remaining =
-        list.filter(existing, fn(item) { item != normalized })
+      let remaining = list.filter(existing, fn(item) { item != normalized })
       let updated_users = dict.insert(store.users, user_id, remaining)
       let next = Store(..store, users: updated_users)
-      use _ <- result.try(save(next) |> result.map_error(fn(_) {
-        "failed to save handles"
-      }))
+      use _ <- result.try(
+        save(next)
+        |> result.map_error(fn(_) { "failed to save handles" }),
+      )
       Ok(#(next, True))
     }
   }
@@ -140,10 +141,7 @@ fn decode_file(raw: String) -> Result(dict.Dict(String, List(String)), Nil) {
   }
 
   let decoder = {
-    use users <- decode.field(
-      "users",
-      decode.dict(decode.string, user_decoder),
-    )
+    use users <- decode.field("users", decode.dict(decode.string, user_decoder))
     decode.success(users)
   }
 

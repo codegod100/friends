@@ -25,7 +25,10 @@ pub type Post {
   )
 }
 
-pub fn fetch_author_posts(handle: String, limit: Int) -> Result(List(Post), String) {
+pub fn fetch_author_posts(
+  handle: String,
+  limit: Int,
+) -> Result(List(Post), String) {
   let path =
     "/xrpc/app.bsky.feed.getAuthorFeed?actor="
     <> uri.percent_encode(handle)
@@ -55,10 +58,16 @@ fn send_get(path: String) -> Result(String, Nil) {
   }
 }
 
-fn decode_feed(body: String, fallback_handle: String) -> Result(List(Post), String) {
+fn decode_feed(
+  body: String,
+  fallback_handle: String,
+) -> Result(List(Post), String) {
   let author_decoder = {
     use handle <- decode.field("handle", decode.string)
-    use display_name <- decode.field("displayName", decode.optional(decode.string))
+    use display_name <- decode.field(
+      "displayName",
+      decode.optional(decode.string),
+    )
     decode.success(#(handle, display_name))
   }
 
@@ -95,16 +104,15 @@ fn decode_feed(body: String, fallback_handle: String) -> Result(List(Post), Stri
   }
 
   json.parse(body, decoder)
-  |> result.map_error(fn(_) { "failed to decode Bluesky feed for " <> fallback_handle })
+  |> result.map_error(fn(_) {
+    "failed to decode Bluesky feed for " <> fallback_handle
+  })
 }
 
 fn post_url(handle: String, uri: String) -> String {
   case list.reverse(string.split(uri, "/")) {
     [rkey, "app.bsky.feed.post", ..] ->
-      "https://bsky.app/profile/"
-      <> handle
-      <> "/post/"
-      <> rkey
+      "https://bsky.app/profile/" <> handle <> "/post/" <> rkey
     _ -> "https://bsky.app/profile/" <> handle
   }
 }

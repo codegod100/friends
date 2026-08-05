@@ -1,5 +1,6 @@
 //// Bridge Wisp requests/responses to Lightspeed HTTP types.
 
+import friends/session
 import gleam/bit_array
 import gleam/http
 import gleam/http/request
@@ -8,7 +9,6 @@ import gleam/list
 import gleam/option.{type Option, None, Some}
 import gleam/result
 import gleam/string
-import friends/session
 import lightspeed/framework/http as ls_http
 import wisp
 
@@ -37,7 +37,14 @@ pub fn to_wisp(
 
   list.fold(conn_response.session, response, fn(acc, entry) {
     let #(key, value) = entry
-    wisp.set_cookie(acc, wisp_request, key, value, wisp.Signed, 60 * 60 * 24 * 7)
+    wisp.set_cookie(
+      acc,
+      wisp_request,
+      key,
+      value,
+      wisp.Signed,
+      60 * 60 * 24 * 7,
+    )
   })
 }
 
